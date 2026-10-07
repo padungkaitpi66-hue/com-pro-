@@ -888,6 +888,425 @@ pause
 
 ```
 
+## docs/index.html
+
+```html
+
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The last hope | บันทึกรายรับรายจ่าย</title>
+  <style>
+    :root {
+      --maroon: #7a1f2b;
+      --maroon-dark: #5c1620;
+      --gold: #e6b422;
+      --ink: #1f2933;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --bg: #f7f5f2;
+      --card: #fff;
+      --green: #1b6b3a;
+      --red: #9b1c1c;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.55 "Segoe UI", Tahoma, sans-serif; }
+    button, input, select { font: inherit; }
+    .site-header { background: linear-gradient(180deg, var(--maroon), var(--maroon-dark)); color: #fff; }
+    .header-inner, main, .footer-inner { width: min(100% - 32px, 1040px); margin: 0 auto; }
+    .header-inner { padding: 20px 0 0; }
+    .brand { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+    .brand h1 { margin: 0; font-size: 22px; }
+    .brand p { margin: 2px 0 0; opacity: .82; font-size: 13px; }
+    .section-pill { border: 1px solid rgba(255,255,255,.42); border-radius: 999px; padding: 4px 12px; font-size: 13px; white-space: nowrap; }
+    nav { display: flex; gap: 4px; overflow-x: auto; margin-top: 18px; border-top: 1px solid rgba(255,255,255,.2); }
+    nav button { flex: 0 0 auto; border: 0; border-bottom: 3px solid transparent; padding: 11px 14px 9px; background: transparent; color: #fff; opacity: .86; cursor: pointer; }
+    nav button:hover, nav button.active { opacity: 1; }
+    nav button.active { border-bottom-color: var(--gold); font-weight: 700; }
+    main { padding: 28px 0 52px; }
+    h2 { margin: 0 0 12px; font-size: 19px; }
+    .lead { margin: 0 0 20px; color: var(--muted); }
+    .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-bottom: 20px; }
+    .stat, .panel { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+    .stat { padding: 14px 16px; }
+    .stat-label { display: block; color: var(--muted); font-size: 13px; }
+    .stat-value { display: block; margin-top: 3px; color: var(--maroon); font-size: 23px; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .stat.good .stat-value { color: var(--green); }
+    .stat.bad .stat-value { color: var(--red); }
+    .panel { padding: 18px; margin-bottom: 18px; }
+    .panel-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .panel-heading h2 { margin: 0; }
+    .btn { display: inline-flex; justify-content: center; align-items: center; min-height: 40px; border: 1px solid var(--maroon); border-radius: 7px; padding: 8px 14px; background: var(--maroon); color: #fff; text-decoration: none; cursor: pointer; }
+    .btn:hover { background: var(--maroon-dark); }
+    .btn.secondary { background: #fff; color: var(--maroon); }
+    .btn.danger { min-height: 32px; padding: 4px 9px; border-color: #edc4c4; background: #fff; color: var(--red); }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 13px; }
+    .field input, .field select { width: 100%; min-height: 42px; border: 1px solid #cbd5e1; border-radius: 7px; padding: 8px 10px; background: #fff; color: var(--ink); }
+    .field input:focus, .field select:focus, button:focus-visible { outline: 3px solid rgba(230,180,34,.55); outline-offset: 2px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 16px; }
+    .form-grid .wide { grid-column: 1 / -1; }
+    .table-wrap { width: 100%; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 600px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; font-size: 14px; }
+    th { background: #f1ede8; color: var(--muted); font-size: 13px; font-weight: 600; }
+    tr:last-child td { border-bottom: 0; }
+    .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .badge { display: inline-block; margin-right: 6px; border-radius: 999px; padding: 2px 9px; background: #e6f5ec; color: var(--green); font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .badge.expense { background: #fdecec; color: var(--red); }
+    .empty { border: 1px dashed #cbd5e1; border-radius: 8px; padding: 24px 12px; color: var(--muted); text-align: center; }
+    .bar-row { display: grid; grid-template-columns: minmax(90px, 150px) 1fr minmax(95px, 130px); align-items: center; gap: 10px; padding: 8px 0; }
+    .bar-track { height: 14px; overflow: hidden; border-radius: 7px; background: #efeae4; }
+    .bar-fill { height: 100%; border-radius: inherit; background: var(--maroon); }
+    .advice { border-left: 4px solid var(--gold); padding: 3px 0 3px 14px; font-size: 17px; }
+    .note { margin: 10px 0 0; color: var(--muted); font-size: 13px; }
+    .member-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+    .member { border: 1px solid var(--line); border-radius: 8px; padding: 16px; background: #fff; }
+    .member-name { font-weight: 700; }
+    .member-id, .member-role { color: var(--muted); font-size: 13px; }
+    .member-role { margin-top: 8px; color: var(--maroon); }
+    [hidden] { display: none !important; }
+    footer { border-top: 1px solid var(--line); padding: 14px 0; background: #fff; color: var(--muted); font-size: 13px; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; }
+    @media (max-width: 600px) {
+      .brand h1 { font-size: 18px; }
+      .brand p { max-width: 235px; }
+      .section-pill { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .wide { grid-column: auto; }
+      .stat-value { font-size: 21px; }
+      .bar-row { grid-template-columns: minmax(75px, 1fr) 1.5fr; }
+      .bar-row .bar-amount { grid-column: 2; text-align: right; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div>
+          <h1>The last hope</h1>
+          <p>บันทึกรายรับรายจ่าย · วางแผนการเงิน</p>
+        </div>
+        <span class="section-pill">sec 6</span>
+      </div>
+      <nav aria-label="เมนูหลัก">
+        <button class="active" type="button" data-page="dashboard">ภาพรวม</button>
+        <button type="button" data-page="records">เพิ่มรายการ</button>
+        <button type="button" data-page="analysis">วิเคราะห์</button>
+        <button type="button" data-page="team">ทีม</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="dashboard-page">
+      <h2>ภาพรวมการเงิน</h2>
+      <p class="lead">ดูยอดรายรับ รายจ่าย และเงินคงเหลือ</p>
+      <div class="stat-grid">
+        <div class="stat good"><span class="stat-label">รายรับรวม</span><strong class="stat-value" id="dashboard-income">0.00 บาท</strong></div>
+        <div class="stat bad"><span class="stat-label">รายจ่ายรวม</span><strong class="stat-value" id="dashboard-expense">0.00 บาท</strong></div>
+        <div class="stat"><span class="stat-label">เงินคงเหลือ</span><strong class="stat-value" id="dashboard-balance">0.00 บาท</strong></div>
+      </div>
+      <section class="panel">
+        <div class="panel-heading">
+          <h2>รายการล่าสุด</h2>
+          <button class="btn secondary" type="button" data-page="records">เพิ่มรายการ</button>
+        </div>
+        <div id="dashboard-list"></div>
+      </section>
+    </section>
+
+    <section id="records-page" hidden>
+      <h2>เพิ่มรายการรายรับหรือรายจ่าย</h2>
+      <p class="lead">ระบุประเภทรายการ หมวดหมู่ รายละเอียด และจำนวนเงิน</p>
+      <form id="transaction-form" class="panel">
+        <div class="form-grid">
+          <div class="field">
+            <label for="type">ประเภทรายการ</label>
+            <select id="type" name="type" required>
+              <option value="income">รายรับ</option>
+              <option value="expense">รายจ่าย</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="category">หมวดหมู่</label>
+            <select id="category" name="category" required>
+              <option>เงินเดือน</option><option>เงินค่าขนม</option><option>รายได้เสริม</option>
+              <option>อาหาร</option><option>เดินทาง</option><option>ที่พักและบิล</option>
+              <option>การศึกษา</option><option>สุขภาพ</option><option>บันเทิง</option>
+              <option>ช้อปปิ้ง</option><option>อื่นๆ</option>
+            </select>
+          </div>
+          <div class="field wide">
+            <label for="detail">รายละเอียด</label>
+            <input id="detail" name="detail" maxlength="100" placeholder="เช่น ค่าอาหารกลางวัน" required>
+          </div>
+          <div class="field">
+            <label for="amount">จำนวนเงิน (บาท)</label>
+            <input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+          </div>
+        </div>
+        <button class="btn" type="submit">บันทึกรายการ</button>
+      </form>
+      <section class="panel">
+        <h2>รายการทั้งหมด</h2>
+        <div id="all-list"></div>
+      </section>
+    </section>
+
+    <section id="analysis-page" hidden>
+      <h2>วิเคราะห์การใช้เงิน</h2>
+      <p class="lead">คำแนะนำคำนวณจากรายการที่บันทึกใน browser นี้</p>
+      <div class="stat-grid">
+        <div class="stat good"><span class="stat-label">รายรับรวม</span><strong class="stat-value" id="analysis-income">0.00 บาท</strong></div>
+        <div class="stat bad"><span class="stat-label">รายจ่ายรวม</span><strong class="stat-value" id="analysis-expense">0.00 บาท</strong></div>
+        <div class="stat"><span class="stat-label">ใช้รายรับไปแล้ว</span><strong class="stat-value" id="analysis-rate">0.0%</strong></div>
+        <div class="stat"><span class="stat-label">เงินคงเหลือ</span><strong class="stat-value" id="analysis-balance">0.00 บาท</strong></div>
+      </div>
+      <section class="panel">
+        <h2>คำแนะนำ</h2>
+        <p class="advice" id="advice">ยังไม่มีรายการรายจ่าย เพิ่มข้อมูลเพื่อเริ่มวิเคราะห์</p>
+        <p class="note">เป็นการวิเคราะห์ตามกฎจากข้อมูลใน browser ไม่ได้ส่งข้อมูลไปยังบริการ AI ภายนอก</p>
+      </section>
+      <section class="panel">
+        <h2>สัดส่วนรายจ่ายตามหมวด</h2>
+        <div id="category-bars"></div>
+      </section>
+    </section>
+
+    <section id="team-page" hidden>
+      <h2>The last hope · sec 6</h2>
+      <p class="lead">ระบบบันทึกรายรับและรายจ่าย</p>
+      <div class="member-grid">
+        <article class="member"><div class="member-name">นายวรวุฒิ สมสี</div><div class="member-id">65130045220</div><div class="member-role">Data Engineer</div></article>
+        <article class="member"><div class="member-name">นายผดุงเกียรติ พิมโคตร</div><div class="member-id">66130043531</div><div class="member-role">QA / Test</div></article>
+        <article class="member"><div class="member-name">นายภานุเทพ ชัยบุตร</div><div class="member-id">66130044134</div><div class="member-role">Project Lead (PM)</div></article>
+        <article class="member"><div class="member-name">นายศักรินทร์ ปัญญาพ่อ</div><div class="member-id">66130046583</div><div class="member-role">Frontend Dev (HTML/CSS)</div></article>
+      </div>
+    </section>
+    <p class="note">หมายเหตุ: ข้อมูลเก็บแยกใน browser ของแต่ละเครื่อง การเปิดจากอีกเครื่องจะไม่เห็นรายการของเครื่องนี้</p>
+  </main>
+
+  <footer><div class="footer-inner"><span>The last hope — sec 6</span><span>ข้อมูลใน browser นี้เท่านั้น</span></div></footer>
+
+  <script>
+    const storageKey = "the-last-hope-transactions-v1";
+    let transactions = loadTransactions();
+
+    function loadTransactions() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (Array.isArray(saved)) return saved;
+      } catch (error) {
+        return [];
+      }
+      return [];
+    }
+
+    function saveTransactions() {
+      localStorage.setItem(storageKey, JSON.stringify(transactions));
+    }
+
+    function money(value) {
+      return new Intl.NumberFormat("th-TH", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value) + " บาท";
+    }
+
+    function totals() {
+      let income = 0;
+      let expense = 0;
+      const categories = Object.create(null);
+      for (const item of transactions) {
+        if (item.type === "income") {
+          income = income + item.amount;
+        } else if (item.type === "expense") {
+          expense = expense + item.amount;
+          if (categories[item.category]) categories[item.category] = categories[item.category] + item.amount;
+          else categories[item.category] = item.amount;
+        }
+      }
+      return { income: income, expense: expense, balance: income - expense, categories: categories };
+    }
+
+    function makeCell(text, className) {
+      const cell = document.createElement("td");
+      cell.textContent = text;
+      if (className) cell.className = className;
+      return cell;
+    }
+
+    function makeRow(item, allowDelete) {
+      const row = document.createElement("tr");
+      const description = document.createElement("td");
+      const badge = document.createElement("span");
+      badge.className = item.type === "income" ? "badge" : "badge expense";
+      badge.textContent = item.type === "income" ? "รายรับ" : "รายจ่าย";
+      description.appendChild(badge);
+      description.appendChild(document.createTextNode(item.detail));
+      row.appendChild(description);
+      row.appendChild(makeCell(item.category, "category-cell"));
+      row.appendChild(makeCell(money(item.amount), "num"));
+      row.appendChild(makeCell(new Date(item.createdAt).toLocaleDateString("th-TH"), "date-cell"));
+      if (allowDelete) {
+        const actionCell = document.createElement("td");
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "btn danger";
+        deleteButton.textContent = "ลบ";
+        deleteButton.addEventListener("click", function () {
+          transactions = transactions.filter(function (record) { return record.id !== item.id; });
+          saveTransactions();
+          render();
+        });
+        actionCell.appendChild(deleteButton);
+        row.appendChild(actionCell);
+      }
+      return row;
+    }
+
+    function fillList(elementId, list, allowDelete) {
+      const container = document.getElementById(elementId);
+      container.replaceChildren();
+      if (list.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "ยังไม่มีรายการ ไปที่หน้าเพิ่มรายการเพื่อเริ่มบันทึก";
+        container.appendChild(empty);
+        return;
+      }
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrap";
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const headRow = document.createElement("tr");
+      for (const label of ["รายการ", "หมวดหมู่", "จำนวนเงิน", "วันที่"]) {
+        const cell = document.createElement("th");
+        cell.textContent = label;
+        if (label === "จำนวนเงิน") cell.className = "num";
+        headRow.appendChild(cell);
+      }
+      if (allowDelete) {
+        const actionHeading = document.createElement("th");
+        actionHeading.textContent = "";
+        headRow.appendChild(actionHeading);
+      }
+      thead.appendChild(headRow);
+      const tbody = document.createElement("tbody");
+      for (const item of list) tbody.appendChild(makeRow(item, allowDelete));
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      wrapper.appendChild(table);
+      container.appendChild(wrapper);
+    }
+
+    function renderAnalysis(summary) {
+      document.getElementById("analysis-income").textContent = money(summary.income);
+      document.getElementById("analysis-expense").textContent = money(summary.expense);
+      const rate = summary.income > 0 ? summary.expense * 100 / summary.income : 0;
+      document.getElementById("analysis-rate").textContent = rate.toFixed(1) + "%";
+      document.getElementById("analysis-balance").textContent = money(summary.balance);
+
+      let largestCategory = "";
+      let largestAmount = 0;
+      const bars = document.getElementById("category-bars");
+      bars.replaceChildren();
+      for (const category of Object.keys(summary.categories)) {
+        const amount = summary.categories[category];
+        if (amount > largestAmount) {
+          largestAmount = amount;
+          largestCategory = category;
+        }
+        const row = document.createElement("div");
+        row.className = "bar-row";
+        const label = document.createElement("span");
+        label.textContent = category;
+        const track = document.createElement("div");
+        track.className = "bar-track";
+        const fill = document.createElement("div");
+        fill.className = "bar-fill";
+        fill.style.width = summary.expense > 0 ? (amount * 100 / summary.expense) + "%" : "0%";
+        track.appendChild(fill);
+        const amountLabel = document.createElement("span");
+        amountLabel.className = "bar-amount num";
+        amountLabel.textContent = money(amount);
+        row.appendChild(label);
+        row.appendChild(track);
+        row.appendChild(amountLabel);
+        bars.appendChild(row);
+      }
+
+      let advice = "รายจ่ายยังอยู่ในระดับที่รับมือได้ ลองบันทึกต่อเนื่องและกันเงินออมก่อนใช้จ่าย";
+      if (summary.expense === 0) advice = "ยังไม่มีรายการรายจ่าย เพิ่มข้อมูลเพื่อเริ่มวิเคราะห์";
+      else if (summary.income === 0) advice = "ยังไม่มีรายรับที่บันทึกไว้ ลองเพิ่มรายรับเพื่อเปรียบเทียบ";
+      else if (summary.expense > summary.income) advice = "รายจ่ายมากกว่ารายรับ ลองทบทวนหมวด " + largestCategory;
+      else if (rate >= 80) advice = "ใช้รายรับไปแล้ว " + rate.toFixed(1) + "% ลองกำหนดงบรายสัปดาห์และลดหมวด " + largestCategory;
+      else if (largestAmount * 100 / summary.expense >= 40) advice = "หมวด " + largestCategory + " เป็น " + (largestAmount * 100 / summary.expense).toFixed(1) + "% ของรายจ่าย ลองกำหนดงบให้ชัดเจน";
+      document.getElementById("advice").textContent = advice;
+      if (Object.keys(summary.categories).length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.textContent = "ยังไม่มีข้อมูลรายจ่ายให้วิเคราะห์";
+        bars.appendChild(empty);
+      }
+    }
+
+    function render() {
+      const summary = totals();
+      document.getElementById("dashboard-income").textContent = money(summary.income);
+      document.getElementById("dashboard-expense").textContent = money(summary.expense);
+      document.getElementById("dashboard-balance").textContent = money(summary.balance);
+      const latest = transactions.slice().sort(function (left, right) { return right.createdAt.localeCompare(left.createdAt); });
+      fillList("dashboard-list", latest.slice(0, 5), false);
+      fillList("all-list", latest, true);
+      renderAnalysis(summary);
+    }
+
+    function showPage(pageName) {
+      for (const section of document.querySelectorAll("main > section[id$='-page']")) {
+        section.hidden = section.id !== pageName + "-page";
+      }
+      for (const button of document.querySelectorAll("nav button[data-page]")) {
+        button.classList.toggle("active", button.dataset.page === pageName);
+      }
+      window.scrollTo(0, 0);
+    }
+
+    document.querySelectorAll("[data-page]").forEach(function (button) {
+      button.addEventListener("click", function () { showPage(button.dataset.page); });
+    });
+
+    document.getElementById("transaction-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const form = event.currentTarget;
+      const amount = Number(form.elements.amount.value);
+      const detail = form.elements.detail.value.trim();
+      if (!Number.isFinite(amount) || amount <= 0 || detail === "") {
+        window.alert("กรุณากรอกรายละเอียดและจำนวนเงินที่มากกว่า 0");
+        return;
+      }
+      transactions.push({
+        id: String(Date.now()) + "-" + String(Math.random()),
+        type: form.elements.type.value,
+        category: form.elements.category.value,
+        detail: detail,
+        amount: amount,
+        createdAt: new Date().toISOString()
+      });
+      saveTransactions();
+      form.reset();
+      render();
+      showPage("dashboard");
+    });
+
+    render();
+  </script>
+</body>
+</html>
+
+```
+
 ## docs/tools/setup.md
 
 ```markdown
@@ -927,6 +1346,14 @@ Render อ่าน `render.yaml` เพื่อติดตั้งและ�
 Blueprint ใช้แผนฟรีเพื่อเลี่ยงการสร้างค่าใช้จ่าย แต่ระบบไฟล์ของแผนฟรีไม่ถาวร ข้อมูลใน `data.json`
 อาจหายเมื่อ service restart หรือ deploy ใหม่ และทุกคนที่มีลิงก์สามารถดู เพิ่ม หรือลบรายการได้
 ใช้ข้อมูลตัวอย่างเท่านั้น อย่าบันทึกข้อมูลการเงินจริง; ถ้าต้องเก็บข้อมูลจริง ต้องเพิ่มระบบ login และฐานข้อมูล/พื้นที่เก็บข้อมูลถาวรก่อน
+
+## เปิดด้วย GitHub Pages
+GitHub Pages เปิดไฟล์ static `docs/index.html` ได้ โดยไม่ต้องรัน Flask: เข้า repository → Settings → Pages
+เลือก **Deploy from a branch**, เลือก branch `main` และ folder `/docs` แล้วกด **Save**
+URL จะเป็น `https://padungkaitpi66-hue.github.io/com-pro-/` หลัง GitHub Pages deploy เสร็จ
+
+หน้า GitHub Pages นี้บันทึกข้อมูลไว้ใน local storage ของ browser นั้น รายการจะไม่ซิงก์ไปเครื่องอื่น
+และไม่มี login; ใช้เพื่อสาธิตเท่านั้น ไม่ควรใส่ข้อมูลการเงินจริง ถ้าต้องแชร์ข้อมูลชุดเดียวกันให้ใช้ backend พร้อมฐานข้อมูลและระบบ login
 
 ## ถ้าพัง
 | อาการ | ทำอย่างไร |

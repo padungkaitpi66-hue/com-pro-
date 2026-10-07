@@ -34,6 +34,14 @@ Blueprint ใช้แผนฟรีเพื่อเลี่ยงการ�
 อาจหายเมื่อ service restart หรือ deploy ใหม่ และทุกคนที่มีลิงก์สามารถดู เพิ่ม หรือลบรายการได้
 ใช้ข้อมูลตัวอย่างเท่านั้น อย่าบันทึกข้อมูลการเงินจริง; ถ้าต้องเก็บข้อมูลจริง ต้องเพิ่มระบบ login และฐานข้อมูล/พื้นที่เก็บข้อมูลถาวรก่อน
 
+## เปิดด้วย GitHub Pages
+GitHub Pages เปิดไฟล์ static `docs/index.html` ได้ โดยไม่ต้องรัน Flask: เข้า repository → Settings → Pages
+เลือก **Deploy from a branch**, เลือก branch `main` และ folder `/docs` แล้วกด **Save**
+URL จะเป็น `https://padungkaitpi66-hue.github.io/com-pro-/` หลัง GitHub Pages deploy เสร็จ
+
+หน้า GitHub Pages นี้บันทึกข้อมูลไว้ใน local storage ของ browser นั้น รายการจะไม่ซิงก์ไปเครื่องอื่น
+และไม่มี login; ใช้เพื่อสาธิตเท่านั้น ไม่ควรใส่ข้อมูลการเงินจริง ถ้าต้องแชร์ข้อมูลชุดเดียวกันให้ใช้ backend พร้อมฐานข้อมูลและระบบ login
+
 ## ถ้าพัง
 | อาการ | ทำอย่างไร |
 |---|---|
