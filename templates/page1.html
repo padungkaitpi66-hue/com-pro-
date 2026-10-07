@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p class="lead">สรุปยอดเงินและรายการรายรับรายจ่ายทั้งหมด {{ count }} รายการ</p>
+
+<div class="stat-grid">
+	<div class="stat good">
+		<span class="label">รายรับรวม</span>
+		<strong class="value">{{ "{:,.2f}".format(total_income) }} บาท</strong>
+	</div>
+	<div class="stat bad">
+		<span class="label">รายจ่ายรวม</span>
+		<strong class="value">{{ "{:,.2f}".format(total_expense) }} บาท</strong>
+	</div>
+	<div class="stat">
+		<span class="label">เงินคงเหลือ</span>
+		<strong class="value">{{ "{:,.2f}".format(balance) }} บาท</strong>
+	</div>
+</div>
+
+<section class="panel">
+	<h2 style="margin-top:0">รายการล่าสุด</h2>
+	{% if items %}
+	<table>
+		<tr><th>รายการ</th><th>หมวดหมู่</th><th class="num">จำนวนเงิน</th></tr>
+		{% for item in items|reverse %}
+		<tr>
+			<td>
+				{% if item.type == "income" %}
+				<span class="badge">รายรับ</span>
+				{% else %}
+				<span class="badge">รายจ่าย</span>
+				{% endif %}
+				{{ item.detail }}
+			</td>
+			<td>{{ item.category }}</td>
+			<td class="num">{{ "{:,.2f}".format(item.amount) }} บาท</td>
+		</tr>
+		{% endfor %}
+	</table>
+	{% else %}
+	<div class="empty">ยังไม่มีรายการ ไปที่หน้าเพิ่มรายการเพื่อเริ่มบันทึก</div>
+	{% endif %}
+</section>
+{% endblock %}

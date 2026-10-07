@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p class="lead">บันทึกรายรับและรายจ่ายทั้งหมด {{ count }} รายการ</p>
+
+<div class="two-col">
+	<form method="post" class="panel">
+		<h2 style="margin-top:0">เพิ่มรายการใหม่</h2>
+		<div class="field">
+			<label for="type">ประเภทรายการ</label>
+			<select id="type" name="type" required>
+				<option value="income">รายรับ</option>
+				<option value="expense">รายจ่าย</option>
+			</select>
+		</div>
+		<div class="field">
+			<label for="category">หมวดหมู่</label>
+			<select id="category" name="category" required>
+				{% for category in categories %}
+				<option value="{{ category }}">{{ category }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="field">
+			<label for="detail">รายละเอียด</label>
+			<input id="detail" name="detail" placeholder="เช่น ค่าอาหารกลางวัน" required>
+		</div>
+		<div class="field">
+			<label for="amount">จำนวนเงิน (บาท)</label>
+			<input id="amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required>
+		</div>
+		<button class="btn" type="submit">บันทึกรายการ</button>
+	</form>
+
+	<section class="panel">
+		<h2 style="margin-top:0">รายการที่บันทึก</h2>
+		{% if items %}
+		<table>
+			<tr><th>รายการ</th><th>หมวด</th><th class="num">จำนวนเงิน</th><th></th></tr>
+			{% for item in items|reverse %}
+			<tr>
+				<td>
+					{% if item.type == "income" %}
+					<span class="badge">รายรับ</span>
+					{% else %}
+					<span class="badge">รายจ่าย</span>
+					{% endif %}
+					{{ item.detail }}
+				</td>
+				<td>{{ item.category }}</td>
+				<td class="num">{{ "{:,.2f}".format(item.amount) }} บาท</td>
+				<td style="text-align:right">
+					<form method="post" class="inline">
+						<input type="hidden" name="delete" value="{{ item.no }}">
+						<button class="btn small danger" type="submit">ลบ</button>
+					</form>
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% else %}
+		<div class="empty">ยังไม่มีรายการ ลองเพิ่มรายการแรกได้เลย</div>
+		{% endif %}
+	</section>
+</div>
+{% endblock %}

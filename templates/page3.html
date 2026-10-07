@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ title }}</h1>
+<p class="lead">คำแนะนำอัตโนมัติจากข้อมูลรายรับและรายจ่ายที่บันทึกไว้</p>
+
+<div class="stat-grid">
+	<div class="stat good">
+		<span class="label">รายรับรวม</span>
+		<strong class="value">{{ "{:,.2f}".format(total_income) }} บาท</strong>
+	</div>
+	<div class="stat bad">
+		<span class="label">รายจ่ายรวม</span>
+		<strong class="value">{{ "{:,.2f}".format(total_expense) }} บาท</strong>
+	</div>
+	<div class="stat">
+		<span class="label">ใช้รายรับไปแล้ว</span>
+		<strong class="value">{{ "{:.1f}".format(expense_rate) }}%</strong>
+	</div>
+	<div class="stat">
+		<span class="label">เงินคงเหลือ</span>
+		<strong class="value">{{ "{:,.2f}".format(balance) }} บาท</strong>
+	</div>
+</div>
+
+<section class="panel" style="margin-bottom:18px">
+	<h2 style="margin-top:0">คำแนะนำ</h2>
+	<p>{{ advice }}</p>
+	<p class="muted">เป็นการวิเคราะห์ตามกฎจากข้อมูลที่บันทึก ไม่ได้ส่งข้อมูลออกไปยังบริการ AI ภายนอก</p>
+</section>
+
+<section class="panel">
+	<h2 style="margin-top:0">สัดส่วนรายจ่ายตามหมวด</h2>
+	{% if bars %}
+		{% for bar in bars %}
+		<div class="bar-row">
+			<span>{{ bar.label }}</span>
+			<div class="bar-track"><div class="bar-fill" style="width: {{ bar.percent }}%"></div></div>
+			<span class="num">{{ "{:,.2f}".format(bar.amount) }} บาท</span>
+		</div>
+		{% endfor %}
+	{% else %}
+	<div class="empty">ยังไม่มีข้อมูลรายจ่ายให้วิเคราะห์</div>
+	{% endif %}
+</section>
+{% endblock %}

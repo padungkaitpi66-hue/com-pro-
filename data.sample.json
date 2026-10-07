@@ -1,0 +1,7 @@
+[
+  {"type": "income", "category": "เงินเดือน", "detail": "รายรับประจำ", "amount": 18000},
+  {"type": "expense", "category": "อาหาร", "detail": "ค่าอาหาร", "amount": 4200},
+  {"type": "expense", "category": "เดินทาง", "detail": "ค่าเดินทาง", "amount": 1200},
+  {"type": "expense", "category": "บันเทิง", "detail": "สันทนาการ", "amount": 900},
+  {"type": "expense", "category": "ช้อปปิ้ง", "detail": "ของใช้ส่วนตัว", "amount": 1700}
+]

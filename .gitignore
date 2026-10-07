@@ -1,0 +1,12 @@
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+build/
+dist/
+*.spec
+*.pyc
+.DS_Store
+Thumbs.db
+# uploaded photos are named <name>-<timestamp>.<ext>; keep them small or ignore them:
+# static/img/*-1*.jpg

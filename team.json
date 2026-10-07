@@ -1,0 +1,14 @@
+{
+  "group": {
+    "name": "The last hope",
+    "section": "sec 6",
+    "topic": "ระบบบันทึกรายรับและรายจ่าย",
+    "description": "บันทึกรายการ สรุปเงินคงเหลือ และวิเคราะห์การใช้จ่ายเพื่อช่วยวางแผนการเงิน"
+  },
+  "members": [
+    {"name": "นายวรวุฒิ สมสี", "id": "65130045220", "role": "Data Engineer", "task": "data.json · models.py · page1 Dashboard: สรุปรายการแบบ List และตกแต่งเว็บไซต์"},
+    {"name": "นายผดุงเกียรติ พิมโคตร", "id": "66130043531", "role": "QA / Test", "task": "check.bat · ออกแบบ data.json · class ใน models.py · page2 Form"},
+    {"name": "นายภานุเทพ ชัยบุตร", "id": "66130044134", "role": "Project Lead (PM)", "task": "ออกแบบ data.json · class ใน models.py · page2 Form"},
+    {"name": "นายศักรินทร์ ปัญญาพ่อ", "id": "66130046583", "role": "Frontend Dev (HTML/CSS)", "task": "ออกแบบ data.json · class ใน models.py · page2 Form"}
+  ]
+}
