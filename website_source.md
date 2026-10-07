@@ -1,6 +1,6 @@
 # Website Source Bundle
 
-Generated from the current project files. This is a reference bundle, not a standalone runnable website. Binary image assets are kept as separate files.
+Generated from current project source. Runtime data.json is intentionally excluded because it can contain personal transactions. Binary image assets are separate. This file is for reference, not direct execution.
 
 ## app.py
 
@@ -671,14 +671,6 @@ def test_team_page_filled(client):
 
 ```
 
-## data.json
-
-```json
-
-[]
-
-```
-
 ## data.sample.json
 
 ```json
@@ -728,6 +720,31 @@ pytest
 ```text
 
 pyinstaller>=6.0,<7.0
+
+```
+
+## requirements-deploy.txt
+
+```text
+
+-r requirements.txt
+gunicorn>=23,<24
+
+```
+
+## render.yaml
+
+```yaml
+
+services:
+  - type: web
+    name: the-last-hope
+    runtime: python
+    plan: free
+    region: singapore
+    buildCommand: pip install -r requirements-deploy.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /
 
 ```
 
@@ -868,6 +885,57 @@ echo.
 echo Done: dist\TheLastHope.exe
 echo Upload this single EXE to GitHub Releases. The target PC does not need Python.
 pause
+
+```
+
+## docs/tools/setup.md
+
+```markdown
+
+# setup — ติดตั้งครั้งเดียว แล้วรันได้ทุกวัน
+
+ต้องมี **Python 3.12 ขึ้นไป** ในเครื่อง (ตรวจ: `python --version`) และ VS Code
+
+## ครั้งแรก (สร้าง virtual environment + ติดตั้ง Flask/pytest)
+| ระบบ | ทำ |
+|---|---|
+| Windows | ดับเบิลคลิก `setup.bat` (หรือใน terminal: `setup.bat`) |
+| macOS / Linux | `bash setup.sh` |
+
+สคริปต์จะสร้างโฟลเดอร์ `.venv/` (Python ส่วนตัวของโปรเจกต์นี้) แล้วติดตั้งจาก `wheels/` ที่แนบมาในซิป — **ไม่ต้องต่ออินเทอร์เน็ต** (ถ้า wheels ใช้ไม่ได้จะลองดาวน์โหลดให้)
+`.venv/` อยู่ใน `.gitignore` แล้ว — ไม่ต้อง commit สมาชิกแต่ละคนรัน setup เองในเครื่องตัวเอง
+
+## ทุกวัน
+| ทำอะไร | Windows | macOS / Linux |
+|---|---|---|
+| รันเว็บ | `run.bat` → เปิด http://localhost:5000 | `bash run.sh` |
+| ดูคะแนน + pytest | `check.bat` | `bash check.sh` |
+| ใช้คำสั่ง python เอง | `.venv\Scripts\activate` แล้ว `python app.py` | `source .venv/bin/activate` แล้ว `python app.py` |
+
+VS Code: เปิดโฟลเดอร์โปรเจกต์ → มุมล่างขวาเลือก interpreter เป็น `.venv` (VS Code มักถามให้เอง) → terminal ใน VS Code จะ activate ให้อัตโนมัติ
+
+## เปิดบน Windows เครื่องที่ไม่มี Python
+เครื่องที่ใช้สร้างโปรแกรมต้องมี Python และรัน `setup.bat` ก่อน จากนั้นดับเบิลคลิก `build_windows.bat`
+สคริปต์จะติดตั้ง PyInstaller สำหรับขั้นตอน build และสร้างไฟล์เดียว `dist/TheLastHope.exe`
+นำไฟล์ `.exe` ไปแนบใน GitHub Releases (ไม่ใช่เปิดไฟล์ `.py` จากหน้า GitHub) ผู้ใช้ปลายทางดาวน์โหลดแล้ว
+เปิดได้ทันทีโดยไม่ต้องติดตั้ง Python โดยเก็บข้อมูลไว้ที่ `%LOCALAPPDATA%/TheLastHope/data.json`
+
+## เปิดเป็นเว็บไซต์สาธารณะ
+ใน Render Dashboard เลือก New → Blueprint แล้วเชื่อม repository `padungkaitpi66-hue/com-pro-`
+Render อ่าน `render.yaml` เพื่อติดตั้งและเผยแพร่ Flask app จากนั้นคัดลอก URL `onrender.com` ไปส่งให้ผู้อื่น
+
+Blueprint ใช้แผนฟรีเพื่อเลี่ยงการสร้างค่าใช้จ่าย แต่ระบบไฟล์ของแผนฟรีไม่ถาวร ข้อมูลใน `data.json`
+อาจหายเมื่อ service restart หรือ deploy ใหม่ และทุกคนที่มีลิงก์สามารถดู เพิ่ม หรือลบรายการได้
+ใช้ข้อมูลตัวอย่างเท่านั้น อย่าบันทึกข้อมูลการเงินจริง; ถ้าต้องเก็บข้อมูลจริง ต้องเพิ่มระบบ login และฐานข้อมูล/พื้นที่เก็บข้อมูลถาวรก่อน
+
+## ถ้าพัง
+| อาการ | ทำอย่างไร |
+|---|---|
+| `python` ไม่ใช่คำสั่ง | ติดตั้ง Python จาก python.org ติ๊ก "Add python.exe to PATH" · บน Mac ลอง `python3` |
+| `No module named flask` | ยังไม่ได้ activate `.venv` หรือยังไม่ได้รัน setup |
+| เครื่องปลายทางไม่มี Python | ดาวน์โหลด ZIP จาก GitHub Releases แล้วแตกไฟล์ก่อนเปิด `TheLastHope.exe` |
+| port 5000 ถูกใช้แล้ว | `python app.py 5001` (แล้วเปิด localhost:5001) |
+| อยากเริ่มใหม่ | ลบโฟลเดอร์ `.venv/` แล้วรัน setup อีกครั้ง |
 
 ```
 
